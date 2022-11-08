@@ -1,8 +1,7 @@
 package com.example.test.demo.controller;
 
 import com.example.test.demo.dto.UserDTO;
-import com.example.test.demo.service.UserService;
-import org.springframework.http.ResponseEntity;
+import com.example.test.demo.UserService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

@@ -1,16 +1,19 @@
-package com.example.test.demo.service;
+package com.example.test.demo;
 
 import com.example.test.demo.dto.UserDTO;
 import com.example.test.demo.exception.InvalidUserException;
 import com.example.test.demo.model.User;
 import com.example.test.demo.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
+    private final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -22,6 +25,8 @@ public class UserService {
             throw new InvalidUserException("Invalid age for user");
         }else if(userRepository.findByEmailAddress(dto.getEmailAddress()).isPresent()){
             throw new InvalidUserException("Email already exists");
+        }else if(!validEmail(dto.getEmailAddress())){
+            throw new InvalidUserException("Invalid email");
         }
         userRepository.save(new User(dto.getName(), dto.getAge(), dto.getEmailAddress()));
         return true;
@@ -36,6 +41,11 @@ public class UserService {
         User entity = userRepository.findById(id).orElseThrow(() -> new InvalidUserException("No user with that id"));
         userRepository.delete(entity);
         return true;
+    }
+
+    public boolean validEmail(String emailStr) {
+        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
+        return matcher.find();
     }
 
 }
