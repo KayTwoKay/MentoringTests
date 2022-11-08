@@ -12,6 +12,9 @@ public class User {
     private Integer age;
     private String emailAddress;
 
+    public User() {
+    }
+
     public User(String name, int age, String emailAddress) {
         this.name = name;
         this.emailAddress = emailAddress;

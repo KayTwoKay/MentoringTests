@@ -18,7 +18,7 @@ public class UserController {
         return userService.addUser(user);
     }
 
-    @GetMapping("/get-user")
+    @PostMapping("/get-user")
     public UserDTO addUser(@RequestBody Long id) {
         return userService.getUser(id);
     }

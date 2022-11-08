@@ -1,5 +1,6 @@
 package com.example.test.demo;
 
+import com.example.test.demo.constance.Constance;
 import com.example.test.demo.dto.UserDTO;
 import com.example.test.demo.exception.InvalidUserException;
 import com.example.test.demo.model.User;
@@ -22,11 +23,11 @@ public class UserService {
 
     public boolean addUser(UserDTO dto){
         if(dto.getAge() < 0 || dto.getAge() > 120){
-            throw new InvalidUserException("Invalid age for user");
+            throw new InvalidUserException(Constance.INVALID_AGE);
         }else if(userRepository.findByEmailAddress(dto.getEmailAddress()).isPresent()){
             throw new InvalidUserException("Email already exists");
         }else if(!validEmail(dto.getEmailAddress())){
-            throw new InvalidUserException("Invalid email");
+            throw new InvalidUserException(Constance.INVAlID_EMAIL);
         }
         userRepository.save(new User(dto.getName(), dto.getAge(), dto.getEmailAddress()));
         return true;
